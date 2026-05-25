@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obed M. — Data Analyst & Inventory Optimization</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────────── */
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f0ede8;--color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-text-inverse:#f9f8f4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;
+  --color-primary-highlight:#cedcd8;
+  --color-accent:#da7101;
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 80/.06);
+  --shadow-md:0 4px 16px oklch(0.2 0.01 80/.09);
+  --shadow-lg:0 12px 40px oklch(0.2 0.01 80/.13);
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+  --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --text-3xl:clamp(2.5rem,1rem + 4vw,5rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --space-20:5rem;--space-24:6rem;
+  --font-display:"Instrument Serif",Georgia,serif;
+  --font-body:"DM Sans","Helvetica Neue",sans-serif;
+  --content-narrow:640px;--content-default:960px;--content-wide:1200px;
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-text-inverse:#2b2a28;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;
+  --color-primary-highlight:#313b3b;
+  --color-accent:#fdab43;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.2);
+  --shadow-md:0 4px 16px oklch(0 0 0/.3);
+  --shadow-lg:0 12px 40px oklch(0 0 0/.45);
+}
+@media(prefers-color-scheme:light){:root:not([data-theme]){
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f0ede8;--color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-highlight:#cedcd8;
+  --color-accent:#da7101;
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 80/.06);--shadow-md:0 4px 16px oklch(0.2 0.01 80/.09);
+}}
+
+/* ── BASE ────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth;scroll-padding-top:var(--space-16)}
+body{min-height:100dvh;line-height:1.65;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);transition:background .3s,color .3s}
+img,svg{display:block;max-width:100%;height:auto}
+ul[role="list"]{list-style:none}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.15}
+p,li{text-wrap:pretty;max-width:72ch}
+a,button,[role="button"]{transition:color var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition),opacity var(--transition)}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+::selection{background:oklch(from var(--color-primary) l c h/.2);color:var(--color-text)}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+/* ── LAYOUT UTILITIES ───────────────────────────────────── */
+.container{max-width:var(--content-default);margin-inline:auto;padding-inline:var(--space-6)}
+.container--wide{max-width:var(--content-wide)}
+.container--narrow{max-width:var(--content-narrow)}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:oklch(from var(--color-bg) l c h/.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid oklch(from var(--color-text) l c h/.08)}
+.nav__inner{display:flex;align-items:center;justify-content:space-between;
+  padding-block:var(--space-4);max-width:var(--content-wide);
+  margin-inline:auto;padding-inline:var(--space-6)}
+.nav__logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);letter-spacing:-.01em}
+.nav__links{display:flex;align-items:center;gap:var(--space-8);list-style:none}
+.nav__links a{font-size:var(--text-sm);color:var(--color-text-muted);font-weight:450}
+.nav__links a:hover{color:var(--color-text)}
+.nav__cta{font-size:var(--text-sm);font-weight:500;color:var(--color-primary);
+  border:1px solid var(--color-primary);padding:var(--space-2) var(--space-5);
+  border-radius:var(--radius-full)}
+.nav__cta:hover{background:var(--color-primary);color:var(--color-text-inverse)}
+.theme-toggle{width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-full);color:var(--color-text-muted)}
+.theme-toggle:hover{background:oklch(from var(--color-text) l c h/.08);color:var(--color-text)}
+.nav__hamburger{display:none;flex-direction:column;gap:5px;padding:var(--space-2);cursor:pointer}
+.nav__hamburger span{display:block;width:22px;height:2px;background:var(--color-text-muted);border-radius:2px;transition:transform .3s,opacity .3s}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero{min-height:100svh;display:grid;place-items:center;padding-top:var(--space-20);
+  padding-bottom:var(--space-20);position:relative;overflow:hidden}
+.hero__bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero__grid{position:absolute;inset:0;
+  background-image:linear-gradient(oklch(from var(--color-text) l c h/.05) 1px,transparent 1px),
+    linear-gradient(90deg,oklch(from var(--color-text) l c h/.05) 1px,transparent 1px);
+  background-size:48px 48px}
+.hero__glow{position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,oklch(from var(--color-primary) l c h/.12) 0%,transparent 70%);
+  top:-100px;right:-100px;filter:blur(40px)}
+.hero__content{position:relative;z-index:1;max-width:780px;text-align:left}
+.hero__eyebrow{font-size:var(--text-xs);font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-4);
+  display:flex;align-items:center;gap:var(--space-2)}
+.hero__eyebrow::before{content:"";display:block;width:28px;height:2px;background:var(--color-primary);border-radius:2px}
+.hero__headline{font-family:var(--font-display);font-size:var(--text-3xl);
+  line-height:1.05;letter-spacing:-.03em;margin-bottom:var(--space-6);color:var(--color-text)}
+.hero__headline em{font-style:italic;color:var(--color-primary)}
+.hero__sub{font-size:var(--text-lg);color:var(--color-text-muted);max-width:55ch;
+  line-height:1.6;margin-bottom:var(--space-10)}
+.hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);
+  font-weight:500;padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);cursor:pointer}
+.btn--primary{background:var(--color-primary);color:var(--color-text-inverse)}
+.btn--primary:hover{background:var(--color-primary-hover)}
+.btn--ghost{border:1px solid oklch(from var(--color-text) l c h/.2);color:var(--color-text-muted)}
+.btn--ghost:hover{border-color:var(--color-text);color:var(--color-text)}
+.hero__stats{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-top:var(--space-12);
+  padding-top:var(--space-8);border-top:1px solid oklch(from var(--color-text) l c h/.08)}
+.hero__stat{display:flex;flex-direction:column;gap:var(--space-1)}
+.hero__stat-num{font-family:var(--font-display);font-size:var(--text-xl);
+  color:var(--color-text);letter-spacing:-.02em;line-height:1}
+.hero__stat-label{font-size:var(--text-xs);color:var(--color-text-muted);
+  text-transform:uppercase;letter-spacing:.08em}
+
+/* ── SECTION COMMONS ─────────────────────────────────────── */
+.section{padding-block:clamp(var(--space-16),8vw,var(--space-24))}
+.section--alt{background:var(--color-surface)}
+.section__label{font-size:var(--text-xs);font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-4)}
+.section__title{font-family:var(--font-display);font-size:var(--text-2xl);
+  letter-spacing:-.025em;line-height:1.1;margin-bottom:var(--space-4);color:var(--color-text)}
+.section__title em{font-style:italic}
+.section__lead{font-size:var(--text-base);color:var(--color-text-muted);
+  max-width:52ch;line-height:1.7;margin-bottom:var(--space-12)}
+
+/* ── SKILLS PILLS ────────────────────────────────────────── */
+.skills-grid{display:flex;flex-wrap:wrap;gap:var(--space-3)}
+.skill-pill{font-size:var(--text-xs);font-weight:500;letter-spacing:.04em;
+  padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);
+  border:1px solid oklch(from var(--color-text) l c h/.14);
+  color:var(--color-text-muted);background:var(--color-surface)}
+.skill-pill:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.skill-pill--tech{background:var(--color-primary-highlight);border-color:var(--color-primary);
+  color:var(--color-primary)}
+
+/* ── EXPERIENCE TIMELINE ─────────────────────────────────── */
+.timeline{display:flex;flex-direction:column;gap:0}
+.timeline-item{display:grid;grid-template-columns:160px 1fr;gap:var(--space-8);
+  padding-block:var(--space-8);border-bottom:1px solid oklch(from var(--color-text) l c h/.07)}
+.timeline-item:last-child{border-bottom:none}
+.timeline-period{padding-top:var(--space-1)}
+.timeline-date{font-size:var(--text-xs);color:var(--color-text-muted);
+  text-transform:uppercase;letter-spacing:.08em;line-height:1.5}
+.timeline-company{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-1)}
+.timeline-dot{width:8px;height:8px;border-radius:50%;background:var(--color-primary);
+  margin-top:var(--space-2);flex-shrink:0}
+.timeline-content{}
+.timeline-role{font-size:var(--text-base);font-weight:600;color:var(--color-text);margin-bottom:var(--space-3)}
+.timeline-desc{font-size:var(--text-base);color:var(--color-text-muted);line-height:1.65;margin-bottom:var(--space-4)}
+.timeline-achievements{list-style:none;display:flex;flex-direction:column;gap:var(--space-2)}
+.timeline-achievements li{font-size:var(--text-sm);color:var(--color-text-muted);
+  display:flex;align-items:baseline;gap:var(--space-2)}
+.timeline-achievements li::before{content:"→";color:var(--color-primary);flex-shrink:0;font-size:.8em}
+.achievement-highlight{color:var(--color-text);font-weight:500}
+
+/* ── PROJECT CARD ────────────────────────────────────────── */
+.project-card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-xl);padding:var(--space-8);
+  box-shadow:var(--shadow-sm);transition:box-shadow var(--transition),transform var(--transition)}
+.project-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.project-tag{font-size:var(--text-xs);font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-4)}
+.project-title{font-family:var(--font-display);font-size:var(--text-xl);
+  letter-spacing:-.02em;margin-bottom:var(--space-3);color:var(--color-text)}
+.project-desc{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7;
+  margin-bottom:var(--space-6)}
+.project-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-6)}
+.project-meta span{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);
+  border-radius:var(--radius-full);background:var(--color-surface-offset);color:var(--color-text-muted)}
+.project-link{display:inline-flex;align-items:center;gap:var(--space-2);
+  font-size:var(--text-sm);font-weight:500;color:var(--color-primary)}
+.project-link:hover{color:var(--color-primary-hover)}
+.project-link svg{width:14px;height:14px}
+.project-stat-row{display:flex;gap:var(--space-6);padding:var(--space-4) var(--space-5);
+  background:var(--color-surface-offset);border-radius:var(--radius-lg);margin-bottom:var(--space-6)}
+.project-stat{display:flex;flex-direction:column;gap:2px}
+.project-stat-val{font-size:var(--text-base);font-weight:600;color:var(--color-text);
+  font-family:var(--font-display)}
+.project-stat-lbl{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+/* ── TOOL STACK ──────────────────────────────────────────── */
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-4)}
+.stack-card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2)}
+.stack-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-md);background:var(--color-primary-highlight)}
+.stack-icon img{width:20px;height:20px}
+.stack-name{font-size:var(--text-sm);font-weight:600;color:var(--color-text)}
+.stack-cat{font-size:var(--text-xs);color:var(--color-text-faint)}
+
+/* ── CONTACT SECTION ─────────────────────────────────────── */
+.contact-card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-xl);padding:clamp(var(--space-8),5vw,var(--space-16));
+  display:grid;grid-template-columns:1fr auto;gap:var(--space-8);align-items:center}
+.contact-info{display:flex;flex-direction:column;gap:var(--space-3)}
+.contact-row{display:flex;align-items:center;gap:var(--space-3);font-size:var(--text-sm);
+  color:var(--color-text-muted)}
+.contact-row svg{width:16px;height:16px;flex-shrink:0;color:var(--color-primary)}
+.contact-row a:hover{color:var(--color-primary)}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.footer{padding-block:var(--space-8);border-top:1px solid oklch(from var(--color-text) l c h/.07);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-4)}
+.footer-text{font-size:var(--text-xs);color:var(--color-text-faint)}
+
+/* ── MOBILE ──────────────────────────────────────────────── */
+@media(max-width:767px){
+  .nav__links,.nav__cta{display:none}
+  .nav__hamburger{display:flex}
+  .nav__mobile-menu{display:none;position:fixed;inset:0;background:var(--color-bg);
+    z-index:99;padding:var(--space-24) var(--space-6) var(--space-8);
+    flex-direction:column;gap:var(--space-6)}
+  .nav__mobile-menu.open{display:flex}
+  .nav__mobile-menu a{font-size:var(--text-lg);color:var(--color-text-muted)}
+  .nav__mobile-menu a:hover{color:var(--color-primary)}
+  .hero__content{text-align:left}
+  .timeline-item{grid-template-columns:1fr;gap:var(--space-2)}
+  .timeline-period{display:flex;align-items:center;gap:var(--space-3)}
+  .contact-card{grid-template-columns:1fr}
+  .footer{flex-direction:column;text-align:center}
+  .hero__stats{gap:var(--space-6)}
+}
+
+/* ── SCROLL REVEAL ───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- SKIP LINK -->
+<a href="#main" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Skip to content</a>
+
+<!-- NAV -->
+<header class="nav" role="banner">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo" aria-label="Obed Medina home">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect width="28" height="28" rx="6" fill="var(--color-primary)"/>
+        <path d="M7 9h5.5c2.485 0 4.5 2.015 4.5 4.5S14.985 18 12.5 18H7V9z" fill="var(--color-text-inverse)" opacity=".9"/>
+        <path d="M17 14l4-5v10" stroke="var(--color-text-inverse)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Obed Medina</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="nav__links" role="list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#project">Project</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#contact" class="nav__cta">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="nav__hamburger" aria-label="Open menu" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<nav class="nav__mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#experience" class="mobile-link">Experience</a>
+  <a href="#project" class="mobile-link">Project</a>
+  <a href="#stack" class="mobile-link">Stack</a>
+  <a href="#contact" class="mobile-link" style="color:var(--color-primary);font-weight:500">Contact →</a>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" aria-label="Introduction">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__grid"></div>
+    <div class="hero__glow"></div>
+  </div>
+  <div class="container hero__content">
+    <p class="hero__eyebrow">Sr. Data Analyst · Inventory Optimization</p>
+    <h1 class="hero__headline">
+      Turning raw data into<br>
+      <em>decisions that matter</em>
+    </h1>
+    <p class="hero__sub">
+      15 years bridging analytics and business outcomes — from fintech credit portfolios
+      to retail inventory pipelines. I build data systems that reduce waste, cut costs,
+      and help teams act faster.
+    </p>
+    <div class="hero__actions">
+      <a href="#project" class="btn btn--primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        See my work
+      </a>
+      <a href="mailto:soymedina@outlook.com" class="btn btn--ghost">Get in touch</a>
+    </div>
+    <div class="hero__stats">
+      <div class="hero__stat">
+        <span class="hero__stat-num">15+</span>
+        <span class="hero__stat-label">Years of experience</span>
+      </div>
+      <div class="hero__stat">
+        <span class="hero__stat-num">15%</span>
+        <span class="hero__stat-label">Stockout reduction</span>
+      </div>
+      <div class="hero__stat">
+        <span class="hero__stat-num">11×</span>
+        <span class="hero__stat-label">CAC improvement</span>
+      </div>
+      <div class="hero__stat">
+        <span class="hero__stat-num">C1</span>
+        <span class="hero__stat-label">English level</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section section--alt" id="about" aria-label="About">
+  <div class="container">
+    <div class="reveal">
+      <p class="section__label">About</p>
+      <h2 class="section__title">Analyst. Builder. <em>Advisor.</em></h2>
+      <p class="section__lead">
+        I combine deep analytics knowledge with hands-on engineering skills to solve one of retail's most persistent problems: inventory imbalance. Currently advisor helping businesses to eliminate stockouts and overstock using data and Google Cloud.
+      </p>
+    </div>
+    <div class="skills-grid reveal">
+      <span class="skill-pill skill-pill--tech">SQL / BigQuery</span>
+      <span class="skill-pill skill-pill--tech">Python</span>
+      <span class="skill-pill skill-pill--tech">Google Cloud</span>
+      <span class="skill-pill skill-pill--tech">BigQuery ML</span>
+      <span class="skill-pill skill-pill--tech">Vertex AI</span>
+      <span class="skill-pill">Inventory Optimization</span>
+      <span class="skill-pill">Statistical Analysis</span>
+      <span class="skill-pill">Data Pipelines</span>
+      <span class="skill-pill">Looker Studio</span>
+      <span class="skill-pill">Tableau</span>
+      <span class="skill-pill">Power BI</span>
+      <span class="skill-pill">Google Analytics</span>
+      <span class="skill-pill">Cohort Analysis</span>
+      <span class="skill-pill">Pricing Strategy</span>
+      <span class="skill-pill">Team Leadership</span>
+      <span class="skill-pill">Project Management</span>
+      <span class="skill-pill">English C1</span>
+      <span class="skill-pill">Spanish Native</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PROJECT -->
+<section class="section" id="project" aria-label="Featured project">
+  <div class="container">
+    <div class="reveal">
+      <p class="section__label">Featured Project</p>
+      <h2 class="section__title">Inventory <em>Analysis</em></h2>
+      <p class="section__lead">
+        A real-world BigQuery pipeline that consolidates daily POS snapshots to calculate statistically-driven min/max stock levels per SKU — solving a constraint no off-the-shelf tool handled.
+      </p>
+    </div>
+    <div class="project-card reveal">
+      <p class="project-tag">Supply Chain · BigQuery · GoogleSQL</p>
+      <h3 class="project-title">Statistical Min/Max Inventory Model</h3>
+      <p class="project-desc">
+        The client's POS system only exported daily snapshots — not time-series reports. With no date column in raw exports, calculating reorder points was impossible. I built a pipeline that consolidates 27+ daily CSV files into a single BigQuery table, parses dates from filenames, and computes per-product safety stock at a ~95% service level using a z-score of 1.65.
+      </p>
+      <div class="project-stat-row">
+        <div class="project-stat">
+          <span class="project-stat-val">~95%</span>
+          <span class="project-stat-lbl">Service level</span>
+        </div>
+        <div class="project-stat">
+          <span class="project-stat-val">28-day</span>
+          <span class="project-stat-lbl">Demand window</span>
+        </div>
+        <div class="project-stat">
+          <span class="project-stat-val">Per SKU</span>
+          <span class="project-stat-lbl">Granularity</span>
+        </div>
+        <div class="project-stat">
+          <span class="project-stat-val">GCS + BQ</span>
+          <span class="project-stat-lbl">Infrastructure</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span>Google BigQuery</span>
+        <span>Cloud Storage</span>
+        <span>GoogleSQL</span>
+        <span>Safety Stock</span>
+        <span>Statistics</span>
+      </div>
+      <a href="https://github.com/datamedina/inventory-analysis" target="_blank" rel="noopener noreferrer" class="project-link">
+        View on GitHub
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section section--alt" id="experience" aria-label="Work experience">
+  <div class="container">
+    <div class="reveal">
+      <p class="section__label">Experience</p>
+      <h2 class="section__title">15 years of <em>impact</em></h2>
+      <p class="section__lead">From fintech startups to medical devices — always building analytics systems that move the needle on real business metrics.</p>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="timeline-period">
+          <p class="timeline-date">Dec 2025<br>Present</p>
+          <p class="timeline-company">Advisor</p>
+        </div>
+        <div class="timeline-content">
+          <p class="timeline-role">Data Analyst Consultant</p>
+          <p class="timeline-desc">Building data-driven inventory optimization models for retail clients using Google BigQuery, SQL, and Excel.</p>
+          <ul class="timeline-achievements" role="list">
+            <li><span class="achievement-highlight">15% reduction in stockouts</span> through statistically-driven reorder models</li>
+            <li><span class="achievement-highlight">9% overstock eliminated</span> across product catalog within first engagement</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-period">
+          <p class="timeline-date">Jun 2023<br>Dec 2025</p>
+          <p class="timeline-company">Julius Connected 2 Grow</p>
+        </div>
+        <div class="timeline-content">
+          <p class="timeline-role">Head of Paid Media & Analytics</p>
+          <p class="timeline-desc">Led Paid Media and Analytics team across multi-platform client accounts. Designed and deployed end-to-end data pipelines on Google Cloud.</p>
+          <ul class="timeline-achievements" role="list">
+            <li>Deployed <span class="achievement-highlight">GCP data pipeline</span> connecting Spotify, Meta, Google Ads, GA4, Salesforce & Excel</li>
+            <li>Built a workload management framework that <span class="achievement-highlight">improved team profitability by 5%</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-period">
+          <p class="timeline-date">Jun 2021<br>Sep 2022</p>
+          <p class="timeline-company">WSAudiology</p>
+        </div>
+        <div class="timeline-content">
+          <p class="timeline-role">Marketing Manager</p>
+          <p class="timeline-desc">Product launches, marketing automation, and real-time sales analytics for a global medical devices company.</p>
+          <ul class="timeline-achievements" role="list">
+            <li>Automated data extraction with SQL and <span class="achievement-highlight">Tableau for real-time sales visibility</span></li>
+            <li>Trained international teams on digital marketing tools and data workflows</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-period">
+          <p class="timeline-date">Aug 2014<br>Oct 2018</p>
+          <p class="timeline-company">Prestadero (Fintech)</p>
+        </div>
+        <div class="timeline-content">
+          <p class="timeline-role">Marketing Manager</p>
+          <p class="timeline-desc">Grew from digital marketing coordinator to managing the full marketing analytics function at Mexico's leading P2P lending platform.</p>
+          <ul class="timeline-achievements" role="list">
+            <li><span class="achievement-highlight">Reduced CAC by 11×</span> through data-driven channel optimization</li>
+            <li>Reached <span class="achievement-highlight">breakeven in 18 months</span> with cohort-based acquisition strategy</li>
+            <li>Scaled blog to <span class="achievement-highlight">50,000 monthly organic visits</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-period">
+          <p class="timeline-date">Mar 2020<br>Mar 2021</p>
+          <p class="timeline-company">Eleva+ (Fintech)</p>
+        </div>
+        <div class="timeline-content">
+          <p class="timeline-role">Marketing Manager</p>
+          <ul class="timeline-achievements" role="list">
+            <li>Grew acquisition from <span class="achievement-highlight">3 to 45 new clients/month</span> via cohort analysis</li>
+            <li>Redesigned subscription plans for higher retention and profitability</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="section" id="stack" aria-label="Technology stack">
+  <div class="container">
+    <div class="reveal">
+      <p class="section__label">Tech Stack</p>
+      <h2 class="section__title">Tools I <em>build with</em></h2>
+      <p class="section__lead">A focused stack optimized for data engineering, analytics, and cloud infrastructure.</p>
+    </div>
+    <div class="stack-grid reveal">
+      <div class="stack-card">
+        <div class="stack-icon">
+          <img src="https://cdn.simpleicons.org/googlebigquery/4285F4" alt="" width="20" height="20" loading="lazy">
+        </div>
+        <p class="stack-name">BigQuery</p>
+        <p class="stack-cat">Data Warehouse</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <img src="https://cdn.simpleicons.org/googlecloud/4285F4" alt="" width="20" height="20" loading="lazy">
+        </div>
+        <p class="stack-name">Google Cloud</p>
+        <p class="stack-cat">Cloud Infrastructure</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <img src="https://cdn.simpleicons.org/python/3776AB" alt="" width="20" height="20" loading="lazy">
+        </div>
+        <p class="stack-name">Python</p>
+        <p class="stack-cat">Data Engineering</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon" style="background:var(--color-primary-highlight)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <p class="stack-name">SQL</p>
+        <p class="stack-cat">Query Language</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <img src="https://cdn.simpleicons.org/fivetran/1A73E8" alt="" width="20" height="20" loading="lazy">
+        </div>
+        <p class="stack-name">Fivetran</p>
+        <p class="stack-cat">Data Integration</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <img src="https://cdn.simpleicons.org/github/888" alt="" width="20" height="20" loading="lazy">
+        </div>
+        <p class="stack-name">GitHub</p>
+        <p class="stack-cat">Version Control</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon" style="background:var(--color-primary-highlight)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <p class="stack-name">Looker Studio</p>
+        <p class="stack-cat">Visualization</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <img src="https://cdn.simpleicons.org/tableau/E97627" alt="" width="20" height="20" loading="lazy">
+        </div>
+        <p class="stack-name">Tableau</p>
+        <p class="stack-cat">Visualization</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section section--alt" id="contact" aria-label="Contact">
+  <div class="container container--narrow">
+    <div class="reveal" style="text-align:center;margin-bottom:var(--space-10)">
+      <p class="section__label" style="justify-content:center;display:flex">Contact</p>
+      <h2 class="section__title">Let's work <em>together</em></h2>
+      <p style="font-size:var(--text-base);color:var(--color-text-muted);max-width:46ch;margin-inline:auto;line-height:1.7">
+        Open to data analyst, data engineer, and analytics leadership roles. Available for full-time, contract, and consulting engagements.
+      </p>
+    </div>
+    <div class="contact-card reveal">
+    
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+  <path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0Z"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg>
+          <span>San Luis Potosí, MX</span>
+        </div>
+        <div class="contact-row">
+          
+          <a href="https://github.com/datamedina" class="btn btn--primary" style="white-space:nowrap">
+        Portfolio →
+      </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer">
+    <span class="footer-text">© 2026 Obed M. · Sr. Data Analyst</span>
+    <span class="footer-text">San Luis Potosí, Mexico</span>
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  const sunSVG='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  const moonSVG='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  if(t){
+    t.innerHTML=d==='dark'?sunSVG:moonSVG;
+    t.addEventListener('click',()=>{
+      d=d==='dark'?'light':'dark';
+      r.setAttribute('data-theme',d);
+      t.innerHTML=d==='dark'?sunSVG:moonSVG;
+      t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');
+    });
+  }
+})();
+
+// Mobile menu
+(function(){
+  const btn=document.getElementById('hamburger');
+  const menu=document.getElementById('mobileMenu');
+  const links=menu.querySelectorAll('.mobile-link');
+  if(!btn||!menu)return;
+  btn.addEventListener('click',()=>{
+    const open=menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open);
+    document.body.style.overflow=open?'hidden':'';
+  });
+  links.forEach(l=>l.addEventListener('click',()=>{
+    menu.classList.remove('open');
+    document.body.style.overflow='';
+  }));
+})();
+
+// Scroll reveal
+(function(){
+  const els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('visible'));return;}
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(e=>obs.observe(e));
+})();
+</script>
+</body>
+</html>
